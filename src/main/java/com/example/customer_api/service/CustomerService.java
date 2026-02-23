@@ -3,11 +3,8 @@ package com.example.customer_api.service;
 import com.example.customer_api.domain.Customer;
 import com.example.customer_api.domain.CustomerStatus;
 import com.example.customer_api.repository.CustomerRepository;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CustomerService {
@@ -29,11 +26,10 @@ public class CustomerService {
 
     // READ (ACTIVE ONLY)
     @Transactional(readOnly = true)
-public Customer get(Long id) {
-    return repository.findByIdAndStatus(id, CustomerStatus.ACTIVE)
-            .orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
-}
+    public Customer get(Long id) {
+        return repository.findByIdAndStatus(id, CustomerStatus.ACTIVE)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
 
     // UPDATE
     @Transactional
